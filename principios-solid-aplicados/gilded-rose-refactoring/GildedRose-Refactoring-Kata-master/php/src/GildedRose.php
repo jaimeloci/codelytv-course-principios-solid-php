@@ -64,7 +64,7 @@ final class GildedRose
                 $item->sell_in = $item->sell_in - 1;
             }
 
-            if ($item->sell_in < 0) {
+            if ($item->sell_in < self::MIN_QUALITY) {
                 if ($item->name != self::AGED_BRIE) {
                     if ($item->name != self::BACKSTAGE_PASSES) {
                         if ($item->quality > self::MIN_QUALITY) {
