@@ -6,6 +6,10 @@ namespace Tests;
 
 use GildedRose\GildedRose;
 use GildedRose\Item;
+use GildedRose\ExtensibleItem;
+use GildedRose\AgedBrieExtensibleItem;
+use GildedRose\BackstagePassExtensibleItem;
+use GildedRose\SulfurasExtensibleItem;
 use PHPUnit\Framework\TestCase;
 
 class GildedRoseTest extends TestCase
@@ -13,7 +17,7 @@ class GildedRoseTest extends TestCase
 
     public function testThatSellInValueIsDecreased():void 
     {
-        $items = [new Item('whatever', 10, 0)];
+        $items = [new ExtensibleItem('whatever', 10, 0)];
 
         $gildedRose = new GildedRose($items);
         $gildedRose->updateQuality();
@@ -23,7 +27,7 @@ class GildedRoseTest extends TestCase
 
     public function testThatQualityValueIsDecreased():void 
     {
-        $items = [new Item('whatever', 1, 10)];
+        $items = [new ExtensibleItem('whatever', 1, 10)];
 
         $gildedRose = new GildedRose($items);
         $gildedRose->updateQuality();
@@ -33,7 +37,7 @@ class GildedRoseTest extends TestCase
 
     public function testThatQualityDecreasesTwiceAsMuchWhenSellByIsPassed():void 
     {
-        $items = [new Item('whatever', 0, 10)];
+        $items = [new ExtensibleItem('whatever', 0, 10)];
 
         $gildedRose = new GildedRose($items);
         $gildedRose->updateQuality();
@@ -43,7 +47,7 @@ class GildedRoseTest extends TestCase
 
     public function testThatQualityIsNeverNegative():void 
     {
-        $items = [new Item('whatever', 0, 0)];
+        $items = [new ExtensibleItem('whatever', 0, 0)];
 
         $gildedRose = new GildedRose($items);
         $gildedRose->updateQuality();
@@ -53,7 +57,8 @@ class GildedRoseTest extends TestCase
 
     public function testAgedBrieIncreasesQualityWithAge():void 
     {
-        $items = [new Item('Aged Brie', 5, 1)];
+        //$items = [new ExtensibleItem('Aged Brie', 5, 1)];
+        $items = [new AgedBrieExtensibleItem(5, 1)];
 
         $gildedRose = new GildedRose($items);
         $gildedRose->updateQuality();
@@ -63,7 +68,7 @@ class GildedRoseTest extends TestCase
 
     public function testQualityNeverIncreasesPastFifty():void 
     {
-        $items = [new Item('Aged Brie', 5, 50)];
+        $items = [new AgedBrieExtensibleItem(5, 50)];
 
         $gildedRose = new GildedRose($items);
         $gildedRose->updateQuality();
@@ -73,19 +78,19 @@ class GildedRoseTest extends TestCase
     
     public function testSulfurasNeverChanges():void 
     {
-        $items = [new Item("Sulfuras, Hand of Ragnaros", 0, 25)];
+        $items = [new SulfurasExtensibleItem(0, 25)];
         
         $gildedRose = new GildedRose($items);
         $gildedRose->updateQuality();
         $gildedRose->updateQuality();
         
-        $this->assertEquals(25, $items[0]->quality);
+        $this->assertEquals(80, $items[0]->quality);
         $this->assertEquals(0, $items[0]->sell_in);
     }
     
     public function testBackstagePassIncreasesQualityByOneIfSellByGreaterThenTen():void 
     {
-        $items = [new Item("Backstage passes to a TAFKAL80ETC concert", 11, 20)];
+        $items = [new BackstagePassExtensibleItem(11, 20)];
         
         $gildedRose = new GildedRose($items);
         $gildedRose->updateQuality();
@@ -95,7 +100,7 @@ class GildedRoseTest extends TestCase
     
     public function testBackstagePassIncreasesQualityByTwoIfSellBySmallerThanTen():void 
     {
-        $items = [new Item("Backstage passes to a TAFKAL80ETC concert", 6, 20)];
+        $items = [new BackstagePassExtensibleItem(6, 20)];
         
         $gildedRose = new GildedRose($items);
         $gildedRose->updateQuality();
@@ -105,7 +110,7 @@ class GildedRoseTest extends TestCase
     
     public function testBackstagePassIncreasesQualityByThreeIfSellBySmallerThanFive():void 
     {
-        $items = [new Item("Backstage passes to a TAFKAL80ETC concert", 5, 20)];
+        $items = [new BackstagePassExtensibleItem(5, 20)];
         
         $gildedRose = new GildedRose($items);
         $gildedRose->updateQuality();
@@ -115,7 +120,7 @@ class GildedRoseTest extends TestCase
     
     public function testBackstagePassLosesValueAfterSellByPasses():void 
     {
-        $items = [new Item("Backstage passes to a TAFKAL80ETC concert", 0, 20)];
+        $items = [new BackstagePassExtensibleItem(0, 20)];
         
         $gildedRose = new GildedRose($items);
         $gildedRose->updateQuality();
